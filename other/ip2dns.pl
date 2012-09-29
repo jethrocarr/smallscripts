@@ -6,9 +6,6 @@
 # Usage:
 # ./ip2dns.pl <inputfilename>
 #
-# (c) Copyright 2008 Jethro Carr <jethro.carr@jethrocarr.com>
-# Licensed under the GNU GPL version 2.
-#
 
 use strict;
 

@@ -2,9 +2,6 @@
 #
 # datausage_telstraclearnz.pl
 #
-# (C) Copyright 2008 Jethro Carr <jethro.carr@jethrocarr.com>
-# Licensed under the GNU GPL license version 2 only.
-#
 # This script downloads the data usage information from Telstra Clear
 # and sends a report out via email.
 #

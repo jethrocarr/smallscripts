@@ -2,9 +2,6 @@
 #
 # Timeout & shutdown script
 #
-# Copyright 2007, Jethro Carr <jethro.carr@jethrocarr.com>
-# Licenced under the GNU GPL version 2 or later.
-#
 # This script checks for users logged in (as visible with who) and
 # if samba is installed, will check if anyone is using any shares.
 #

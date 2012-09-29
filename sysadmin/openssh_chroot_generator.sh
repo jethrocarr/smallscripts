@@ -1,19 +1,6 @@
 #!/bin/bash
+#
 # Jethro's OpenSSH Chroot Generater
-# (C) Copyright 2007 Jethro Carr <jethro.carr@jethrocarr.com>
-#
-#    This program is free software; you can redistribute it and/or modify
-#    it under the terms of the GNU General Public License Version 2 as published by
-#    the Free Software Foundation;
-#
-#    This program is distributed in the hope that it will be useful,
-#    but WITHOUT ANY WARRANTY; without even the implied warranty of
-#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-#    GNU General Public License for more details.
-#
-#    You should have received a copy of the GNU General Public License
-#    along with this program; if not, write to the Free Software
-#    Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 #
 
 
@@ -23,7 +10,6 @@ APPS="/bin/bash /bin/ls /bin/mkdir /bin/mv /bin/pwd /bin/rm /bin/cat /usr/bin/id
 
 
 echo "Welcome to Jethro's OpenSSH Chroot Generator."
-echo "This script is licenced under the GNU GPL version 2"
 echo ""
 echo "INSTRUCTIONS:"
 echo "* This script is designed for generating chroot jails for use with OpenSSH with Chroot support http://chrootssh.sourceforge.net/"

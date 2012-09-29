@@ -11,15 +11,6 @@ It was written as a one-off for migrating from a x86 CentOS 4 install to x86_64
 installation - it should also work for you, but you may find that it needs some
 adjustments to suit your install.
 
-If you find and/or fix any bugs, please let me know at jethro.carr@jethrocarr.com. (FYI: 
-This program is licenced under the GNU GPL Licence Version 2.)
-
-Additionally, if you found these scripts useful, please just send me an email letting
-me know so at jethro.carr@jethrocarr.com. It's nice to know if something is useful to
-people or not. :-)
-
-
-
 
 Requirements
 ============

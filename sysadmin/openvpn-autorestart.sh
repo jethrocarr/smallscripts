@@ -4,9 +4,6 @@
 # of the previous day. If the VPN settings have been changed, the checksums won't match and so
 # the script restarts openvpn.
 #
-# Copyright 2007 Jethro Carr <jethro.carr@jethrocarr.com>
-# Licensed under the GNU GPL v2.
-#
 
 MD5SUMFILE=/etc/openvpn/autoreboot.lock
 

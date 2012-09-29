@@ -1,0 +1,65 @@
+Smokeping Arch Converter (SAC)
+=============================
+
+This program provides an easy way to convert all the rrd files in a
+smokeping installation from one computer to another.
+
+This is needed as you can't move RRD files from once architecture to another
+(well, at least from x86 to x86_64).
+
+It was written as a one-off for migrating from a x86 CentOS 4 install to x86_64
+installation - it should also work for you, but you may find that it needs some
+adjustments to suit your install.
+
+If you find and/or fix any bugs, please let me know at jethro.carr@jethrocarr.com. (FYI: 
+This program is licenced under the GNU GPL Licence Version 2.)
+
+Additionally, if you found these scripts useful, please just send me an email letting
+me know so at jethro.carr@jethrocarr.com. It's nice to know if something is useful to
+people or not. :-)
+
+
+
+
+Requirements
+============
+
+You need both perl and rrdtool installed. Since you are running smokeping, both of these will already be installed. :-)
+
+
+
+Usage
+====
+
+There are 2 scripts - sac-dump.pl and sac-restore.pl.
+
+Before using these scripts, you need to setup Smokeping on the new server with the same configuration and file locations as the old server - make sure that Smokeping is working correctly, and that you can view the graphs it is generating. This is important, as the script relys on the existance of rrd files in the smokeping data directory to function.
+
+
+
+The dump script is used on the original installation, and generates a directory tree containing XML files which matches the directory tree of the smokeping data directory.
+
+To use it:
+1) (on the source computer)
+2) Create an empty directory and copy the sac-dump.pl script into it.
+3) Check that the $datadir location set at the top of the script points to the correct data directory location of Smokeping.
+4) Check that the $rrdtool value points to the installed location of rrdtool.
+5) Run the script - it will output information showing what RRD files it finds, and will leave you with a directory with XML files and directories in it, which matches the Smokeping data directory structure.
+6) Copy the whole directory to the target computer.
+
+
+Now we use the restore script to convert the XML files back to RRD files and install them in the Smokeping data directory. Please make a backup of the data directory first, and I would also suggest stopping smokeping before running it.
+
+1) (on the target computer)
+2) Copy the sac-restore.pl into the directory with the dump script. (which has been transfered to this computer)
+3) The $datadir value needs to be the same as on the source computer. If the $rrdtool value is different, correct it.
+4) Run the script - it will scan the Smokeping directory, and for each RRD file it finds, it will delete and replace with a new one generated from the XML files.
+5) Once complete, check that the permissions on the files are correct, and then start smokeping.
+
+
+And that's it - you should have all your data loaded into the new install. :-)
+
+
+
+Please be aware that the script assumes that you know what you are doing - it doesn't have pretty error checking for things like unreadable directories, etc.
+

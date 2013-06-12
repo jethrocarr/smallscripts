@@ -56,7 +56,7 @@ for status in mytimeline:
 
 
 # query my user favourites list
-myfavorites = api.GetFavorites(user=user_name)
+myfavorites = api.GetFavorites()
 
 for favorite in myfavorites:
 

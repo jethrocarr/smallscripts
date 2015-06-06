@@ -1,0 +1,136 @@
+{
+  "AWSTemplateFormatVersion" : "2010-09-09",
+
+  "Description" : "Example configuration for setting up a Yas3fs bucket, SNS, and an IAM user with suitable policy for accessing resources. Note that deleting the stack will fail if the bucket is not empty.",
+
+  "Parameters" : {
+    "S3BucketName": {
+      "Type": "String",
+      "Description" : "Globally unique name of the S3 bucket to create",
+      "Default" : "AWS::StackName",
+      "AllowedPattern" : "[A-Za-z0-9:]*",
+      "ConstraintDescription" : "Use only alphanumerics for the bucket name to avoid breaking Yas3fs IAM rules"
+    }
+  },
+
+  "Conditions" : {
+    "UseStackNameForBucket" : {
+      "Fn::Equals": [
+        {"Ref": "S3BucketName"},
+        "AWS::StackName"
+      ]
+    }
+  },
+
+
+  "Resources" : {
+
+    "S3Bucket" : {
+      "Type" : "AWS::S3::Bucket",
+      "Properties" : {
+        "BucketName" : {
+          "Fn::If" : [
+            "UseStackNameForBucket",
+            { "Ref" : "AWS::StackName" },
+            { "Ref" : "S3BucketName" }
+          ]
+        },
+        "AccessControl" : "Private"
+      },
+      "DeletionPolicy" : "Delete"
+    },
+
+    "SNSTopic" : {
+      "Type" : "AWS::SNS::Topic",
+      "Properties" : {
+        "TopicName" : {"Ref" : "S3Bucket"}
+      }
+    },
+
+    "IAMYas3fsUser" : {
+      "Type" : "AWS::IAM::User",
+      "Properties" : {
+        "Policies" : [{
+          "PolicyName" : "Yas3fsUserAccess",
+          "PolicyDocument" : {
+             "Statement":[
+                {
+                   "Effect":"Allow",
+                   "Action":[
+                      "s3:ListAllMyBuckets"
+                   ],
+                   "Resource": [{ "Fn::Join" : ["", [ "arn:aws:s3:::", { "Ref" : "S3Bucket" } ] ] }]
+                },
+                {
+                   "Effect":"Allow",
+                   "Action":[
+                      "s3:ListBucket",
+                      "s3:ListBucketMultipartUploads",
+                      "s3:GetBucketLocation"
+                   ],
+                   "Resource": [{ "Fn::Join" : ["", [ "arn:aws:s3:::", { "Ref" : "S3Bucket" } ] ] }]
+                },
+                {
+                   "Effect":"Allow",
+                   "Action":[
+                      "s3:ListMultipartUploadParts",
+                      "s3:PutObject",
+                      "s3:GetObject",
+                      "s3:DeleteObject"
+                   ],
+                   "Resource": [{ "Fn::Join" : ["", [ "arn:aws:s3:::", { "Ref" : "S3Bucket" } , "/*" ] ] }]
+                },
+                {
+                   "Effect":"Allow",
+                   "Action":[
+                      "sns:*"
+                   ],
+                   "Resource": { "Ref" : "SNSTopic" }
+                },
+                {
+                   "Effect":"Allow",
+                   "Action":[
+                      "sqs:*"
+                   ],
+                   "Resource": [{ "Fn::Join" : ["", [ "arn:aws:sqs:", { "Ref" : "AWS::Region" }, ":", { "Ref" : "AWS::AccountId" }, ":", "yas3fs-", { "Ref" : "S3Bucket" } , "-*" ] ] }]
+                }
+             ]
+          }
+        }]
+      }
+    },
+
+    "IAMYas3fsUserKeys" : {
+      "Type" : "AWS::IAM::AccessKey",
+      "Properties" : {
+        "UserName" : { "Ref": "IAMYas3fsUser" }
+      }
+    }
+
+
+  },
+
+  "Outputs" : {
+    "S3Region" : {
+      "Value" : { "Ref" : "AWS::Region" },
+      "Description" : "Region where the S3 bucket is located."
+    },
+    "S3Bucket" : {
+      "Value" : { "Ref" : "S3Bucket" },
+      "Description" : "Name of the S3 bucket."
+    },
+    "SNSTopic" : {
+      "Value" : { "Ref" : "SNSTopic" },
+      "Description" : "Name of the SNS topic."
+    },
+    "IAMAccessKeyID" : {
+      "Value" : { "Ref" : "IAMYas3fsUserKeys" },
+      "Description" : "AWSAccessKeyId of the IAM user account for use by Yas3fs servers."
+    },
+    "IAMSecretAccessKey" : {
+      "Value" : { "Fn::GetAtt" : ["IAMYas3fsUserKeys", "SecretAccessKey"] },
+      "Description" : "AWSSecretAccessKey of the IAM user account for use by Yas3fs servers."
+    }
+
+  }
+}

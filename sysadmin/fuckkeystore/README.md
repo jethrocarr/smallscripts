@@ -9,8 +9,8 @@ in order for the apps to start automatically.
 This becomes a real pain if you need to change the keystore since you can't
 generate a new one.
 
-This tool generates an empty keystore with a blank password, which you can
-then import your desired keys/certs into.
+This tool allows you to convert a password protected keystore into one with
+a blank password.
 
 
 # Usage

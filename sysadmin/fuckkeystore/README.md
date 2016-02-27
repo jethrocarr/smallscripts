@@ -16,6 +16,7 @@ then import your desired keys/certs into.
 # Usage
 
 You must have the JDK installed in order to build the Java file:
+
     apt-get install openjdk-7-jdk
     javac FuckKeystore.java
 
